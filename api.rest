@@ -12,8 +12,8 @@ POST http://localhost:4003/push
 Content-Type: application/json
 
 {
-  "quotes": "My bike is my gym, my wheelchair, and my church all in one. I'd like to ride my bike all day long but I've got this thing called a job that keeps getting in the way",
-  "author": "Emo Philips"
+  "quotes": "One of the most important days of my life, was when I learned to ride a bicycle",
+  "author": "Michael Palin"
 }
 
 ### PATCH
