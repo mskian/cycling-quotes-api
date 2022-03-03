@@ -10,7 +10,10 @@ Cycling Quotes JSON API - Build using Prisma, Express and TypeScript
 
 ```sh
 
-### GET - Get all the users
+### GET - Get Random single Quotes
+http://localhost:4003/random
+
+### GET - Get all the Quotes from db
 http://localhost:4003/quotes
 
 ### GET -Get single Quotes by id

@@ -5,12 +5,14 @@ const prisma = new PrismaClient()
 import express, {
     Request,
     Response
-} from 'express';
+} from "express";
+import apicache from "apicache";
 const app = express();
 app.use(express.json());
+const cache = apicache.middleware
 const port = process.env.PORT || 4003;
 
-app.get('/', async (req: Request, res: Response) => {
+app.get('/', cache('1 hour'), async (req: Request, res: Response) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
     res.header('Access-Control-Allow-Methods', 'GET');
@@ -28,7 +30,7 @@ app.get('/', async (req: Request, res: Response) => {
 app.post('/push', async (req: Request, res: Response) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
-    res.header('Access-Control-Allow-Methods', 'GET');
+    res.header('Access-Control-Allow-Methods', 'POST');
     res.header('X-Frame-Options', 'DENY');
     res.header('X-XSS-Protection', '1; mode=block');
     res.header('X-Content-Type-Options', 'nosniff');
@@ -55,7 +57,21 @@ app.post('/push', async (req: Request, res: Response) => {
     });
 });
 
-app.get('/quotes', async (req: Request, res: Response) => {
+app.get('/random', async (req: Request, res: Response) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
+    res.header('Access-Control-Allow-Methods', 'GET');
+    res.header('X-Frame-Options', 'DENY');
+    res.header('X-XSS-Protection', '1; mode=block');
+    res.header('X-Content-Type-Options', 'nosniff');
+    res.header('Strict-Transport-Security', 'max-age=63072000');
+    res.setHeader('Content-Type', 'application/json');
+    app.disable('x-powered-by');
+    const cycling = await prisma.$queryRaw`SELECT * FROM cycling ORDER BY random() LIMIT 1`
+    res.json({cycling})
+});
+
+app.get('/quotes', cache('1 hour'), async (req: Request, res: Response) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
     res.header('Access-Control-Allow-Methods', 'GET');
@@ -71,7 +87,7 @@ app.get('/quotes', async (req: Request, res: Response) => {
     });
 });
 
-app.get('/quotes/:id', async (req: Request, res: Response) => {
+app.get('/quotes/:id', cache('1 hour'), async (req: Request, res: Response) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
     res.header('Access-Control-Allow-Methods', 'GET');
@@ -103,7 +119,7 @@ app.get('/quotes/:id', async (req: Request, res: Response) => {
 app.patch('/push/:id', async (req: Request, res: Response) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
-    res.header('Access-Control-Allow-Methods', 'GET');
+    res.header('Access-Control-Allow-Methods', 'PATCH');
     res.header('X-Frame-Options', 'DENY');
     res.header('X-XSS-Protection', '1; mode=block');
     res.header('X-Content-Type-Options', 'nosniff');
@@ -140,7 +156,7 @@ app.patch('/push/:id', async (req: Request, res: Response) => {
 app.delete('/push/:id', async (req: Request, res: Response) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
-    res.header('Access-Control-Allow-Methods', 'GET');
+    res.header('Access-Control-Allow-Methods', 'DELETE');
     res.header('X-Frame-Options', 'DENY');
     res.header('X-XSS-Protection', '1; mode=block');
     res.header('X-Content-Type-Options', 'nosniff');

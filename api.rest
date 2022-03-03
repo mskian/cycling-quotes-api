@@ -1,6 +1,10 @@
 ### GET
-// Get all the users
+// Get all the Quotes from db
 GET http://localhost:4003/quotes
+
+### GET
+// Get Random Single Quotes
+GET http://localhost:4003/random
 
 ### GET
 // Get single Quotes by id
