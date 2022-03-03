@@ -1,0 +1,31 @@
+### GET
+// Get all the users
+GET http://localhost:4003/quotes
+
+### GET
+// Get single Quotes by id
+GET http://localhost:4003/quotes/2
+
+### POST
+// Post New Quotes
+POST http://localhost:4003/push
+Content-Type: application/json
+
+{
+  "quotes": "My bike is my gym, my wheelchair, and my church all in one. I'd like to ride my bike all day long but I've got this thing called a job that keeps getting in the way",
+  "author": "Emo Philips"
+}
+
+### PATCH
+// Update a Quotes
+PATCH http://localhost:4000/users/1
+Content-Type: application/json
+
+{
+  "author": "Hello World",
+  "name": "Hello"
+}
+
+### DELETE
+// Delete a Quotes
+DELETE http://localhost:4003/push/2
