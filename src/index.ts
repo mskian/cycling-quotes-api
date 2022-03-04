@@ -68,7 +68,15 @@ app.get('/random', async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
     app.disable('x-powered-by');
     const cycling = await prisma.$queryRaw`SELECT * FROM cycling ORDER BY random() LIMIT 1`
-    res.json({cycling})
+    if (cycling == null) {
+        res.status(400).json({
+            "cycling":{"id":0,"quotes":"Not Found","author":"Not Found"}
+        });
+    } else {
+        res.json({
+            cycling
+        });
+    }
 });
 
 app.get('/quotes', cache('1 hour'), async (req: Request, res: Response) => {
@@ -82,9 +90,15 @@ app.get('/quotes', cache('1 hour'), async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
     app.disable('x-powered-by');
     const cycling = await prisma.cycling.findMany();
-    res.json({
-        cycling
-    });
+    if (cycling == null) {
+        res.status(400).json({
+            "cycling":{"id":0,"quotes":"Not Found","author":"Not Found"}
+        });
+    } else {
+        res.json({
+            cycling
+        });
+    }
 });
 
 app.get('/quotes/:id', cache('1 hour'), async (req: Request, res: Response) => {
@@ -100,14 +114,15 @@ app.get('/quotes/:id', cache('1 hour'), async (req: Request, res: Response) => {
     const {
         id
     } = req.params;
+    const random_data = Math.floor(Math.random() * 85) + 1
     const cycling = await prisma.cycling.findUnique({
         where: {
-            id: Number(id)
+            id: Number(id) || random_data
         }
     });
     if (cycling == null) {
         res.status(400).json({
-            cycling: 'Empty Data'
+            "cycling":{"id":0,"quotes":"Not Found","author":"Not Found"}
         });
     } else {
         res.json({
