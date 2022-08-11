@@ -4,9 +4,7 @@
 
 Cycling Quotes JSON API - Build using Prisma, Express and TypeScript  
 
-> Better self Host this API Service for 100% Uptime  
-
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new?template=https%3A%2F%2Fgithub.com%2Fmskian%2Fcycling-quotes-api.git)  
+> Self Host this API Service for 100% Uptime  
 
 ```sh
 
